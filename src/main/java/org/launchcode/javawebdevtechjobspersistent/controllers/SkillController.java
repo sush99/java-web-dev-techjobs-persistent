@@ -24,18 +24,6 @@ public class SkillController {
         return "skills/add";
     }
 
-    @GetMapping("view/{skillId}")
-    public String displayViewSkill(Model model, @PathVariable int skillId) {
-
-        Optional optSkill = skillRepository.findById(skillId);
-        if (optSkill.isPresent()) {
-            Skill skill = (Skill) optSkill.get();
-            model.addAttribute("skill", skill);
-            return "skill/view";
-        } else {
-            return "redirect:../";
-        }
-    }
     @PostMapping("add")
     public String processAddSkillForm(@ModelAttribute @Valid Skill newSkill,
                                          Errors errors, Model model) {
@@ -52,5 +40,18 @@ public class SkillController {
     public String index(Model model){
         model.addAttribute("skills" , skillRepository.findAll());
         return "skills/index";
+    }
+
+    @GetMapping("view/{skillId}")
+    public String displayViewSkill(Model model, @PathVariable int skillId) {
+
+        Optional<Skill> optSkill = skillRepository.findById(skillId);
+        if (optSkill.isPresent()) {
+            Skill skill = (Skill) optSkill.get();
+            model.addAttribute("skill", skill);
+            return "skills/view";
+        } else {
+            return "redirect:../";
+        }
     }
 }
